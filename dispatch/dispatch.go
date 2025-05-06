@@ -21,11 +21,12 @@ import (
 
 //export Java_com_example_Hello_SayHello
 func Java_com_example_Hello_SayHello(env *C.JNIEnv, clazz C.jclass, jparam C.jstring) C.jstring {
-	runtime.UnlockOSThread()
-	fmt.Println("start2")
-	x := debx.Debx("Hello from Go!")
-	fmt.Println("start3")
 	runtime.LockOSThread()
+	defer runtime.UnlockOSThread()
+
+	fmt.Printf(">")
+	x := debx.Debx("Hello from Go!")
+	fmt.Printf("<")
 
 	cs := C.CString(x)
 	defer C.free(unsafe.Pointer(cs))
